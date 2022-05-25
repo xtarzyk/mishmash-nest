@@ -18,6 +18,11 @@ export class RecipeService {
         return this.recipeRepository.findOne(id)
     }
 
+    add(name: string) {
+        const newRecipe = this.recipeRepository.create({ name })
+        return this.recipeRepository.save(newRecipe) 
+    }
+
     remove(id: number) {
         return this.recipeRepository.delete(id)
     }

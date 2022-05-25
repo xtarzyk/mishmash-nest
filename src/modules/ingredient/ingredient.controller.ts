@@ -1,4 +1,6 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { CreateIngredientDto } from './dto/create-ingredient.dto';
+import { EditIngredientDto } from './dto/edit-ingredient.dto';
 import { IngredientService } from './ingredient.service';
 
 @Controller('ingredient')
@@ -13,6 +15,16 @@ export class IngredientController {
     @Get('/:id')
     getIngredient(@Param('id') id: number) {
         return this.ingredientService.findOne(id)
+    }
+
+    @Post()
+    addIngredient(@Body() body: CreateIngredientDto) {
+        return this.ingredientService.add(body.name)
+    }
+
+    @Patch('/:id')
+    editIngredient(@Param('id') id: number, @Body() body: EditIngredientDto) {
+        return this.ingredientService.edit(id, body.name)
     }
 
     @Delete('/:id')

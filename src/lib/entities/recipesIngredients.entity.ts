@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, TableForeignKey, ManyToMany, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Ingredient } from './ingredient.entity';
 import { Recipe } from './recipe.entity';
 
