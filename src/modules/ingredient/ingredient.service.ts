@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Ingredient } from 'src/lib/entities/ingredient.entity';
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Ingredient } from 'src/lib/entities/ingredient.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class IngredientService {
@@ -14,8 +14,16 @@ export class IngredientService {
         return this.ingredientRepository.find()
     }
 
-    findOne(id: number) {
+    findOneById(id: number) {
+        console.log(id, 'by-id')
         return this.ingredientRepository.findOne(id)
+    }
+
+    findOneByName(name: string) {
+        console.log(name, 'by-name')
+        const ingredient = this.ingredientRepository.findOne({ where: { name } })
+        console.log(ingredient)
+        return ingredient
     }
 
     add(name: string) {

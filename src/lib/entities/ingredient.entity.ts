@@ -9,9 +9,6 @@ export class Ingredient {
   @Column()
   name: string;
 
-  @OneToMany(
-      () => RecipesIngredients,
-      recipesIngredients => recipesIngredients.ingredient
-  )
+  @OneToMany(() => RecipesIngredients, recipesIngredients => recipesIngredients.ingredient)
   recipesIngredients: Array<RecipesIngredients>
 }

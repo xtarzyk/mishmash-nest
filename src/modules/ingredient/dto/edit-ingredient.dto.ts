@@ -1,3 +1,10 @@
+import { IsInt, IsPositive, IsString } from "class-validator"
+
 export class EditIngredientDto {
-    name: string
+    @IsInt()
+    @IsPositive()
+    readonly id: number
+
+    @IsString()
+    readonly name: string
 }

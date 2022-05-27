@@ -1,6 +1,6 @@
 import { IsString } from "class-validator";
 
-export class CreateIngredientDto {
+export class GetIngredientNameDto {
     @IsString()
     readonly name: string
 }

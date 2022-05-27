@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 't
 import { Ingredient } from './ingredient.entity';
 import { Recipe } from './recipe.entity';
 
-@Entity()
+@Entity({ name: 'recipesIngredients'})
 export class RecipesIngredients {
   @PrimaryGeneratedColumn()
   id: number;
@@ -13,17 +13,11 @@ export class RecipesIngredients {
   @Column()
   recipeId: number;
 
-  @ManyToOne(
-      () => Ingredient,
-      ingredient => ingredient.recipesIngredients
-  )
+  @ManyToOne(() => Ingredient, ingredient => ingredient.recipesIngredients)
   @JoinColumn({ name: 'ingredientId' })
   ingredient: Array<Ingredient>
 
-  @ManyToOne(
-      () => Recipe,
-      recipe => recipe.recipesIngredients
-  )
+  @ManyToOne(() => Recipe, recipe => recipe.recipesIngredients)
   @JoinColumn({ name: 'recipeId' })
   recipe: Array<Recipe>
 }
