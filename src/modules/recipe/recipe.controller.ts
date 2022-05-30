@@ -27,7 +27,7 @@ export class RecipeController {
     @Get('/all')
     async getAllRecipes() {
         console.log('!!!')
-        return await this.recipeService.findRecipe()
+        return await this.recipeService.findRecipes()
     }
 
     @Post()
