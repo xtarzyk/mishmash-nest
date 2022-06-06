@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, ParseArrayPipe, Post, Query } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { GetRecipeByIngredientsDto } from './dto/get-recipe-by-ingredients.dto';
-import { GetRecipeNameDto } from './dto/get-recipe-name.dto';
 import { GetRecipeDto } from './dto/get-recipe.dto';
 import { RecipeService } from './recipe.service';
 
@@ -20,8 +19,11 @@ export class RecipeController {
     }
 
     @Get('/mishmash')
-    getRecipeByIngredients(@Query() dto: GetRecipeByIngredientsDto) {
-        return this.recipeService.findByIngredients(dto.ids)
+    getRecipeByIngredients(
+        @Query('ids', new ParseArrayPipe({ items: Number, separator: ',' })) 
+        ids: number[]
+        ) {
+        return this.recipeService.findByIngredients(ids)
     }
 
     @Get('/all')

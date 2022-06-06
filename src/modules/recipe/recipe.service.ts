@@ -4,6 +4,7 @@ import { Ingredient } from 'src/lib/entities/ingredient.entity';
 import { Recipe } from 'src/lib/entities/recipe.entity';
 import { RecipesIngredients } from 'src/lib/entities/recipesIngredients.entity';
 import { RecipeModel } from 'src/lib/models';
+import { RecipeNameModel } from 'src/lib/models/recipe-name-model';
 import { Repository } from 'typeorm';
 import { RecipeIngredientDao } from './dao/recipe-ingredients.dao';
 
@@ -19,13 +20,29 @@ export class RecipeService {
         return this.recipeRepository.findOne(id)
     }
 
-    findByIngredients(ids: Array<number>) {
-        return this.recipeRepository
-            // .createQueryBuilder('R')
-            // .select('R.name AS recipeName, R.recipeId, I.name AS ingredientName, I.ingredientId')
-            // .innerJoin(RecipesIngredients, 'RI', 'R.recipeId = RI.recipeId')
-            // .innerJoin(Ingredient, 'I', 'I.ingredientId = RI.ingredientId')
-            // .getRawOne()
+    async findByIngredients(ids: Array<number>) {
+        const recipes = await this.findRecipes()
+        const sortedIds = ids.sort()
+        return recipes.reduce((acc, curr) => {
+            const searchRecipe = curr.ingredients.every((ingredient, index) => ingredient.ingredientId === sortedIds[index])
+            if (searchRecipe) {
+                return [
+                    {
+                        recipeId: curr.recipeId,
+                        recipeName: curr.recipeName
+                    }
+                ]
+            }
+            return acc
+        }, [] as Array<RecipeNameModel>)
+
+        // return this.recipeRepository
+        //     .createQueryBuilder('R')
+        //     .select('R.recipeId, R.name')
+        //     .distinct()
+        //     .innerJoin(RecipesIngredients, 'RI', 'R.recipeId = RI.recipeId')
+        //     .where('RI.ingredientId IN(:...ids)', { ids })
+        //     .getRawOne()
     }
         
     async findRecipes() {
