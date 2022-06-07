@@ -10,7 +10,11 @@ import { RecipeIngredientDao } from './dao/recipe-ingredients.dao';
 
 @Injectable()
 export class RecipeService {
-    constructor(@InjectRepository(Recipe) private recipeRepository: Repository<Recipe>) {}
+    constructor(
+        @InjectRepository(Recipe) private recipeRepository: Repository<Recipe>,
+        @InjectRepository(RecipesIngredients) private recipeIngredientsRepo: Repository<RecipesIngredients>
+    ) {}
+    
         
     findAll() {
         return this.recipeRepository.find()
@@ -23,6 +27,7 @@ export class RecipeService {
     async findByIngredients(ids: Array<number>) {
         const recipes = await this.findRecipes()
         const sortedIds = ids.sort()
+        
         return recipes.reduce((acc, curr) => {
             const searchRecipe = curr.ingredients.every((ingredient, index) => ingredient.ingredientId === sortedIds[index])
             if (searchRecipe) {
@@ -85,7 +90,8 @@ export class RecipeService {
         }, [] as Array<RecipeModel>)
     }
 
-    add(name: string) {
+    add(name: string, ids: Array<number>) {
+        console.log(ids)
         const newRecipe = this.recipeRepository.create({ name })
         return this.recipeRepository.save(newRecipe) 
     }

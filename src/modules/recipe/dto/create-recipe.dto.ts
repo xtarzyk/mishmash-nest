@@ -1,3 +1,9 @@
+import { IsArray, IsString } from "class-validator";
+
 export class CreateRecipeDto {
-    name: string
+    @IsString()
+    readonly name: string
+
+    @IsArray()
+    readonly ingredientIds: Array<number>
 }

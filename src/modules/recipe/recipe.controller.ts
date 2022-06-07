@@ -33,8 +33,8 @@ export class RecipeController {
     }
 
     @Post()
-    addIngredient(@Body() body: CreateRecipeDto) {
-        return this.recipeService.add(body.name)
+    addRecipe(@Body() body: CreateRecipeDto) {
+        return this.recipeService.add(body.name, body.ingredientIds)
     }
 
     @Delete('/id')
