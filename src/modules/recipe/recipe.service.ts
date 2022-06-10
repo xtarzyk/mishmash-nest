@@ -90,10 +90,22 @@ export class RecipeService {
         }, [] as Array<RecipeModel>)
     }
 
-    add(name: string, ids: Array<number>) {
-        console.log(ids)
+    async add(name: string, ids: Array<number>) {
         const newRecipe = this.recipeRepository.create({ name })
-        return this.recipeRepository.save(newRecipe) 
+        const recipeId = await this.recipeRepository.save(newRecipe).then(saved => saved.recipeId)
+        const newArr = ids.map(ingredientId => ({
+            recipeId,
+            ingredientId
+        }))
+        
+        const newRI = this.recipeIngredientsRepo
+            .createQueryBuilder()
+            .insert()
+            .into(RecipesIngredients)
+            .values(newArr)
+            .execute()
+
+        return this.recipeRepository.save(newRecipe), newRI
     }
 
     remove(id: number) {

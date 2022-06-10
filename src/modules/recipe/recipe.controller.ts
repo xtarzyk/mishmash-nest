@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, ParseArrayPipe, Post, Query } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
-import { GetRecipeByIngredientsDto } from './dto/get-recipe-by-ingredients.dto';
 import { GetRecipeDto } from './dto/get-recipe.dto';
 import { RecipeService } from './recipe.service';
 
@@ -27,9 +26,9 @@ export class RecipeController {
     }
 
     @Get('/all')
-    async getAllRecipes() {
+    getAllRecipes() {
         console.log('!!!')
-        return await this.recipeService.findRecipes()
+        return this.recipeService.findRecipes()
     }
 
     @Post()
@@ -37,8 +36,8 @@ export class RecipeController {
         return this.recipeService.add(body.name, body.ingredientIds)
     }
 
-    @Delete('/id')
-    removeRecipe(@Query() dto: GetRecipeDto) {
+    @Delete()
+    removeRecipe(@Body() dto: GetRecipeDto) {
         return this.recipeService.remove(dto.id)
     }
 }
