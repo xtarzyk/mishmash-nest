@@ -53,7 +53,7 @@ export class RecipeService {
     async findRecipes() {
         const recipes = await this.recipeRepository
             .createQueryBuilder('R')
-            .select('R.recipeId, R.name AS recipeName, I.ingredientId, I.name AS ingredientName')
+            .select('R.recipeId, R.name AS recipeName, I.ingredientId, I.name AS name')
             .innerJoin(RecipesIngredients, 'RI', 'R.recipeId = RI.recipeId')
             .innerJoin(Ingredient, 'I', 'I.ingredientId = RI.ingredientId')
             .getRawMany<RecipeIngredientDao>()
@@ -68,7 +68,7 @@ export class RecipeService {
                         recipeName: currentItem.recipeName,
                         ingredients: [{
                             ingredientId: currentItem.ingredientId, 
-                            ingredientName: currentItem.ingredientName
+                            name: currentItem.name
                         }]
                     }
                 ]
@@ -80,7 +80,7 @@ export class RecipeService {
                         ...recipe,
                         ingredients: recipe.ingredients.concat({ 
                             ingredientId: currentItem.ingredientId, 
-                            ingredientName: currentItem.ingredientName 
+                            name: currentItem.name 
                         })
                     }
                 }
@@ -108,7 +108,13 @@ export class RecipeService {
         return this.recipeRepository.save(newRecipe), newRI
     }
 
-    remove(id: number) {
-        return this.recipeRepository.delete(id)
+    remove(recipeId: number) {
+        const removeRI = this.recipeIngredientsRepo
+            .createQueryBuilder()
+            .delete()
+            .where('recipeId = :recipeId', { recipeId: recipeId })
+            .execute()
+
+        return this.recipeRepository.delete(recipeId), removeRI
     }
 }

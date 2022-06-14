@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Ingredient } from './ingredient.entity';
-import { Recipe } from './recipe.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm'
+import { Ingredient } from './ingredient.entity'
+import { Recipe } from './recipe.entity'
 
 @Entity({ name: 'recipesIngredients'})
 export class RecipesIngredients {

@@ -1,4 +1,4 @@
 export type IngredientModel = {
     ingredientId: number,
-    ingredientName: string
+    name: string
 }
